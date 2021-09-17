@@ -21,12 +21,12 @@ $(NAME) : $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -L . $(MLXFLAGS) -o $(NAME) 
 
 clean :
-	@$(RM) $(OBJS) libft/*.o 
-	printf "\e[31m.o files deleted\e[0m\n"
+	@$(RM) $(OBJS) libft/*.o mlx/*.o
+	@printf "\e[31m.o files deleted\e[0m\n"
 
 fclean : clean
-	@$(RM) $(NAME) libft/libft.a 
-	printf "\e[31mso_long and libft.a deleted\e[0m\n"
+	@$(RM) $(NAME) libft/libft.a libmlx.a 
+	@printf "\e[31mso_long, libmlx.a and libft.a deleted\e[0m\n"
 
 re: fclean all
 
