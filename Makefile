@@ -4,7 +4,7 @@ CFLAGS = -Werror -Wextra -Wall -g
 MLXFLAGS = -lmlx -framework OPENGL -framework Appkit
 RM = rm -rfv
 
-FILES = so_long
+FILES = lops
 
 SRCS = $(addsuffix .c, $(FILES))
 OBJS = $(addsuffix .o, $(FILES))
