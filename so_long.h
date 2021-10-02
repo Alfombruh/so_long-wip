@@ -23,6 +23,12 @@ typedef struct s_image
 	int hei;
 }			t_image;
 
+typedef struct s_map
+{
+	int tall;
+	int wide;
+}			t_map;
+
 typedef struct s_gen
 {
 	t_image	image;
