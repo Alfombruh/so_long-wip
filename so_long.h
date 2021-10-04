@@ -8,6 +8,8 @@ typedef struct s_data
 {
 	void	*mlx;
 	void	*win;
+	int x;
+	int y;
 }				t_data;
 
 typedef struct s_image
@@ -17,6 +19,20 @@ typedef struct s_image
 	int bpp;
 	int line_len;
 	int endian;
+	int wid;
+	int hei;
 }			t_image;
+
+typedef struct s_map
+{
+	int tall;
+	int wide;
+}			t_map;
+
+typedef struct s_gen
+{
+	t_image	image;
+	t_data	data;
+}		t_gen;
 
 #endif
