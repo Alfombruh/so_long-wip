@@ -4,6 +4,11 @@
 #include "libft/libft.h"
 #include "mlx/mlx.h"
 
+char **map_check(char *map_name);
+char **ft_allocate(char *buffer, int wide, int tall);
+char **ft_fill(char *buffer, char **map, int tall, int wide);
+t_map *ft_count_buffer_size(char *buffer, t_map *map);
+
 typedef struct s_data
 {
 	void	*mlx;

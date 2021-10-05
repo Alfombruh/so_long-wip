@@ -11,7 +11,6 @@ t_map	*ft_count_buffer_size(char *buffer, t_map *map)
 	return(0);
 }
 
-
 char **ft_fill(char *buffer, char **map, int tall, int wide)
 {
 	int i;
@@ -35,26 +34,6 @@ char **ft_fill(char *buffer, char **map, int tall, int wide)
 	return(map);
 }
 
-/*char **ft_fill(char *buffer, char **map, int tall, int wide)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0; 
-	while(*buffer != '\0')
-	{
-		if(*buffer == '\n')
-		{
-			i++;
-			j = 0;
-			buffer++;
-		}
-		map[i][j++] = *buffer++;
-	}
-	return(map);
-}*/
-
 char **ft_allocate(char	*buffer,int	wide, int tall)
 {
 	int i;
@@ -68,11 +47,10 @@ char **ft_allocate(char	*buffer,int	wide, int tall)
 		i++;
 	}
 	map[i] = 0;
-	printf("\t\tMALLOC DONE!!!\n");
 	return(map);
 }
 
-int main(int argc, char **argv)
+char **map_check(char *argv)
 {
 	int fd;
 	int i;
@@ -81,7 +59,7 @@ int main(int argc, char **argv)
 	char *buffer;
 	
 	map.wide = 0;
-	fd = open(argv[1], O_RDONLY);
+	fd = open(*argv, O_RDONLY);
 	if (fd < 0)
 	{
 		printf("Error al leer el mapa");
@@ -90,13 +68,9 @@ int main(int argc, char **argv)
 	map.tall = 1;
 	buffer = (char *) malloc(sizeof(char) * 5000);
 	read(fd, buffer, 5000);
-	//buffer[map.wide + map.tall + 1] = '\0';
-	printf("%s\n", buffer);
 	ft_count_buffer_size(buffer, &map);
-	printf("map.wide = %d\tmap.tall = %d\t\n", map.wide, map.tall);
 	mapa = ft_allocate(buffer, map.wide, map.tall);
 	mapa = ft_fill(buffer, mapa, map.tall, map.wide);
-	while(mapa[i])
-		printf("\t%s\n", mapa[i++]);
-	return(0);
+	free(buffer);
+	return(mapa);
 }
