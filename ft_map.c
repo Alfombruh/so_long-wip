@@ -24,6 +24,7 @@ void ft_windowput(t_solong *data, char c)
 		data->img = mlx_xpm_file_to_image(data->mlx, "./tiles/exit.xpm", &data->imgx, &data->imgy);
 		mlx_put_image_to_window(data->mlx, data->win, data->img, data->x * 64, data->y * 64);
 	}
+	mlx_string_put(data->mlx, data->win, 10, 10, 0x9C9C9C, ft_itoa(data->collectables));
 }
 
 static void ft_printmap(t_solong *data)
