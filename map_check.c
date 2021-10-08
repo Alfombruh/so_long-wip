@@ -1,83 +1,94 @@
 #include "so_long.h"
 
-t_map	*ft_count_buffer_size(char *buffer, t_map *map)
+static int ft_count_buffer_size(char *buffer, t_solong *map)
 {
-	while(buffer[map->wide++] != '\0')
+	int tomasturba;
+
+	map->wide =  0;
+	map->tall = 1;
+	tomasturba = 0;
+
+	while(buffer[map->wide] != '\0')
 	{
 		if (buffer[map->wide] == '\n')
+		{
+			if (map->tall == 1)
+				tomasturba = map->wide;
+			else
+			{
+					if ((map->wide - (map->tall - 1)) - (tomasturba * (map->tall - 1)) != tomasturba)
+					return (0);
+			}	
 			map->tall++;
+		}
+		map->wide++;
 	}
-	map->wide = map->wide / map->tall;
-	return(0);
+	map->wide = tomasturba;
+	return (1);
 }
-//probar funcion pero en vez de avanzar en el i avanzar en el j por como esta la memoria alojada
-//osea en vez de map[++i][j] que sea map [i][++j]
-char **ft_fill(char **map, char *buffer)
+
+static	char **ft_fill(char *buffer, char **map, int tall, int wide)
 {
 	int i;
 	int j;
+	int k;
 
-	i = -1;
-	j = 0;
-	printf("bout to enter a while\n");
-	while(*buffer != '\0')
+	i = 0;
+	k = 0;
+
+	while(i < tall)
 	{
-		printf("buffer char RN = %c\n", *buffer);
-		printf("in the while\ti value: %d\tj value: %d\n", i, j); 
-		if(*buffer == '\n')
+		j = 0;
+		while(j < wide)
 		{
-			printf("enters if\n");
-			i = -1;
-			buffer++;
+			map[i][j] = buffer[k++];
 			j++;
-			printf("leaves if\n");
 		}
-		map[++i][j] = *buffer++;
-		printf("\tchar %c\n", map[i][j]);
+		map[i][j] = '\0';
+		i++;
+		k++;
 	}
-	return (map);
+	return(map);
 }
 
-char **ft_allocate(char	*buffer,int	wide, int tall)
+static	char **ft_allocate(int	wide, int tall)
 {
 	int i;
 	char **map;
 	
 	i = 0;
-	printf("hey, boutta enter a malloc here\n");
-	printf("my width is:%d \t my height is:%d \t\n", wide, tall);
-	map = malloc(sizeof(char) * tall);
+	map = malloc(sizeof(char *) * (tall + 1));
 	while(i < tall)
 	{
-		map[i] = malloc(sizeof(char) * wide);
+		map[i] = malloc(sizeof(char) * (wide + 1));
 		i++;
 	}
-	printf("\tMALLOC DONE!!!\n");
+	map[i] = 0;
 	return(map);
 }
 
-int main(int argc, char **argv)
+void map_check(char *argv, t_solong *map)
 {
 	int fd;
-	t_map map;
-	char **mapa;
 	char *buffer;
 	
-	map.wide = 0;
-	fd = open(argv[1], O_RDONLY);
+	map->wide = 0;
+	fd = open(argv, O_RDONLY);
 	if (fd < 0)
 	{
 		printf("Error al leer el mapa");
-		return(0);
+		return ;
 	}
-	map.tall = 1;
+	map->tall = 1;
 	buffer = (char *) malloc(sizeof(char) * 5000);
 	read(fd, buffer, 5000);
-	printf("%s\n", buffer);
-	ft_count_buffer_size(buffer, &map);
-	printf("map.wide = %d\tmap.tall = %d\t\n", map.wide, map.tall);
-	mapa = ft_allocate(buffer, map.wide, map.tall);
-	mapa = ft_fill(mapa, buffer);
-	printf("We've finished\n");
-	return(0);
+	if (ft_count_buffer_size(buffer, map) == 0)
+	{
+		printf("MAP ERROR NOT RECTANGULAR\n");
+		printf("%d \n %d \n", map->tall, map->wide);
+		return ;
+	}
+	map->map = ft_allocate(map->wide, map->tall);
+	map->map = ft_fill(buffer, map->map, map->tall, map->wide);
+	free(buffer);
 }
